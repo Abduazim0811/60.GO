@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"io"
 
-	pb "Homerwork_60/genproto"
+	pb "Homework_60/genproto"
 )
 
 type TradeServer struct {
