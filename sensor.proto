@@ -2,19 +2,18 @@ syntax = "proto3";
 
 option go_package = "./genproto";
 
-service SalesService {
-    rpc StreamSalesTransactions (stream SalesTransaction) returns (SalesSummary);
+service TradeService {
+  rpc StreamTrades (stream TradeRequest) returns (TradeResponse);
 }
 
-message SalesTransaction {
-    string transaction_id = 1;
-    string product_id = 2;
-    int32 quantity = 3;
-    float price = 4;
-    int64 timestamp = 5;
+message TradeRequest {
+  int32 id = 1;
+  string symbol = 2;
+  int32 quantity = 3;
+  double price = 4;
 }
 
-message SalesSummary {
-    float total_amount = 1;
-    int32 total_transactions = 2;
+message TradeResponse {
+  int32 total_trades = 1;
+  double total_amount = 2;
 }

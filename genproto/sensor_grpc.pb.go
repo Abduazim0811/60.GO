@@ -19,124 +19,124 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	SalesService_StreamSalesTransactions_FullMethodName = "/SalesService/StreamSalesTransactions"
+	TradeService_StreamTrades_FullMethodName = "/TradeService/StreamTrades"
 )
 
-// SalesServiceClient is the client API for SalesService service.
+// TradeServiceClient is the client API for TradeService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type SalesServiceClient interface {
-	StreamSalesTransactions(ctx context.Context, opts ...grpc.CallOption) (SalesService_StreamSalesTransactionsClient, error)
+type TradeServiceClient interface {
+	StreamTrades(ctx context.Context, opts ...grpc.CallOption) (TradeService_StreamTradesClient, error)
 }
 
-type salesServiceClient struct {
+type tradeServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSalesServiceClient(cc grpc.ClientConnInterface) SalesServiceClient {
-	return &salesServiceClient{cc}
+func NewTradeServiceClient(cc grpc.ClientConnInterface) TradeServiceClient {
+	return &tradeServiceClient{cc}
 }
 
-func (c *salesServiceClient) StreamSalesTransactions(ctx context.Context, opts ...grpc.CallOption) (SalesService_StreamSalesTransactionsClient, error) {
+func (c *tradeServiceClient) StreamTrades(ctx context.Context, opts ...grpc.CallOption) (TradeService_StreamTradesClient, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &SalesService_ServiceDesc.Streams[0], SalesService_StreamSalesTransactions_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &TradeService_ServiceDesc.Streams[0], TradeService_StreamTrades_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &salesServiceStreamSalesTransactionsClient{ClientStream: stream}
+	x := &tradeServiceStreamTradesClient{ClientStream: stream}
 	return x, nil
 }
 
-type SalesService_StreamSalesTransactionsClient interface {
-	Send(*SalesTransaction) error
-	CloseAndRecv() (*SalesSummary, error)
+type TradeService_StreamTradesClient interface {
+	Send(*TradeRequest) error
+	CloseAndRecv() (*TradeResponse, error)
 	grpc.ClientStream
 }
 
-type salesServiceStreamSalesTransactionsClient struct {
+type tradeServiceStreamTradesClient struct {
 	grpc.ClientStream
 }
 
-func (x *salesServiceStreamSalesTransactionsClient) Send(m *SalesTransaction) error {
+func (x *tradeServiceStreamTradesClient) Send(m *TradeRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *salesServiceStreamSalesTransactionsClient) CloseAndRecv() (*SalesSummary, error) {
+func (x *tradeServiceStreamTradesClient) CloseAndRecv() (*TradeResponse, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
-	m := new(SalesSummary)
+	m := new(TradeResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-// SalesServiceServer is the server API for SalesService service.
-// All implementations must embed UnimplementedSalesServiceServer
+// TradeServiceServer is the server API for TradeService service.
+// All implementations must embed UnimplementedTradeServiceServer
 // for forward compatibility
-type SalesServiceServer interface {
-	StreamSalesTransactions(SalesService_StreamSalesTransactionsServer) error
-	mustEmbedUnimplementedSalesServiceServer()
+type TradeServiceServer interface {
+	StreamTrades(TradeService_StreamTradesServer) error
+	mustEmbedUnimplementedTradeServiceServer()
 }
 
-// UnimplementedSalesServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedSalesServiceServer struct {
+// UnimplementedTradeServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedTradeServiceServer struct {
 }
 
-func (UnimplementedSalesServiceServer) StreamSalesTransactions(SalesService_StreamSalesTransactionsServer) error {
-	return status.Errorf(codes.Unimplemented, "method StreamSalesTransactions not implemented")
+func (UnimplementedTradeServiceServer) StreamTrades(TradeService_StreamTradesServer) error {
+	return status.Errorf(codes.Unimplemented, "method StreamTrades not implemented")
 }
-func (UnimplementedSalesServiceServer) mustEmbedUnimplementedSalesServiceServer() {}
+func (UnimplementedTradeServiceServer) mustEmbedUnimplementedTradeServiceServer() {}
 
-// UnsafeSalesServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SalesServiceServer will
+// UnsafeTradeServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to TradeServiceServer will
 // result in compilation errors.
-type UnsafeSalesServiceServer interface {
-	mustEmbedUnimplementedSalesServiceServer()
+type UnsafeTradeServiceServer interface {
+	mustEmbedUnimplementedTradeServiceServer()
 }
 
-func RegisterSalesServiceServer(s grpc.ServiceRegistrar, srv SalesServiceServer) {
-	s.RegisterService(&SalesService_ServiceDesc, srv)
+func RegisterTradeServiceServer(s grpc.ServiceRegistrar, srv TradeServiceServer) {
+	s.RegisterService(&TradeService_ServiceDesc, srv)
 }
 
-func _SalesService_StreamSalesTransactions_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(SalesServiceServer).StreamSalesTransactions(&salesServiceStreamSalesTransactionsServer{ServerStream: stream})
+func _TradeService_StreamTrades_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(TradeServiceServer).StreamTrades(&tradeServiceStreamTradesServer{ServerStream: stream})
 }
 
-type SalesService_StreamSalesTransactionsServer interface {
-	SendAndClose(*SalesSummary) error
-	Recv() (*SalesTransaction, error)
+type TradeService_StreamTradesServer interface {
+	SendAndClose(*TradeResponse) error
+	Recv() (*TradeRequest, error)
 	grpc.ServerStream
 }
 
-type salesServiceStreamSalesTransactionsServer struct {
+type tradeServiceStreamTradesServer struct {
 	grpc.ServerStream
 }
 
-func (x *salesServiceStreamSalesTransactionsServer) SendAndClose(m *SalesSummary) error {
+func (x *tradeServiceStreamTradesServer) SendAndClose(m *TradeResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *salesServiceStreamSalesTransactionsServer) Recv() (*SalesTransaction, error) {
-	m := new(SalesTransaction)
+func (x *tradeServiceStreamTradesServer) Recv() (*TradeRequest, error) {
+	m := new(TradeRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-// SalesService_ServiceDesc is the grpc.ServiceDesc for SalesService service.
+// TradeService_ServiceDesc is the grpc.ServiceDesc for TradeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var SalesService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "SalesService",
-	HandlerType: (*SalesServiceServer)(nil),
+var TradeService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "TradeService",
+	HandlerType: (*TradeServiceServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "StreamSalesTransactions",
-			Handler:       _SalesService_StreamSalesTransactions_Handler,
+			StreamName:    "StreamTrades",
+			Handler:       _TradeService_StreamTrades_Handler,
 			ClientStreams: true,
 		},
 	},
